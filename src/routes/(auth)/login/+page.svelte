@@ -1,9 +1,8 @@
 <script lang="ts">
   import { superForm } from "sveltekit-superforms/client"
-  import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte"
 
-    import type { PageData } from "../register/$types";
-    import { loginSchema } from "$lib/utils/schemas";
+  import type { PageData } from "../register/$types";
+  import { loginSchema } from "$lib/utils/schemas";
 
   export let data: PageData;
 
@@ -39,7 +38,7 @@
       <label class="label">
         <span>password</span>
         <input 
-          class:input-error={$errors.username}
+          class:input-error={$errors.password}
           class="variant-form-material input"
           type="password" 
           placeholder="password" 

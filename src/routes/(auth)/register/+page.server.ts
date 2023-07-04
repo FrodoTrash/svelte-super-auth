@@ -19,7 +19,6 @@ export const actions: Actions = {
 
     const form = await superValidate(event, registerSchema);
 
-    console.log(form)
 
     if (!form.valid){
       return fail(400, {
