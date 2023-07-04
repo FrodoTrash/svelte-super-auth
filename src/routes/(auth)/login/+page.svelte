@@ -1,18 +1,38 @@
 <script lang="ts">
   import { superForm } from "sveltekit-superforms/client"
-
+  import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte"
   import type { PageData } from "../register/$types";
   import { loginSchema } from "$lib/utils/schemas";
 
+
+  import { Toast, toastStore } from '@skeletonlabs/skeleton';
+  import type { ToastSettings } from '@skeletonlabs/skeleton';
+
   export let data: PageData;
 
-  //@ts-expect-error no idea atm
+ 
   const { form, errors, enhance, message } = superForm(data.form, {
     validators: loginSchema,
+    onUpdated({ form }) {
+      if (form.valid){
+        console.log('lol');
+        const t: ToastSettings = {
+          message: 'successfully signed in',
+        	timeout: 1000
+        };
+        toastStore.trigger(t);
+      } else{
+        const t: ToastSettings = {
+          message: 'ERROR',
+        	timeout: 1000
+        };
+        toastStore.trigger(t);
+      }
+    }
   });
   
 </script>
-  
+<SuperDebug data={$form} />
 <div class="container h-full mx-auto flex justify-center items-center">
   <div class="space-y-5">
     
@@ -50,11 +70,12 @@
       </label>
       
       <button class="btn variant-form-material" type="submit">Submit</button>
-      
       {#if $message}
-        <div class="message">{$message}</div>
+      <div class="message">{$message}</div>
       {/if}
     </form>
-
+    
   </div>
 </div>
+
+<Toast/>

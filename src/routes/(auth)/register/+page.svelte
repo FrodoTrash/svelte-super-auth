@@ -7,7 +7,6 @@
 
   export let data: PageData;
 
-  //@ts-expect-error no idea atm
   const { form, errors, enhance } = superForm(data.form, {
     validators: registerSchema
   });
