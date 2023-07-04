@@ -10,23 +10,17 @@
 
   export let data: PageData;
 
- 
   const { form, errors, enhance, message } = superForm(data.form, {
+    //@ts-expect-error there shouldn't be an error here
     validators: loginSchema,
-    onUpdated({ form }) {
-      if (form.valid){
-        console.log('lol');
+    onResult({ result }) {
+      if (result.type == 'redirect'){
         const t: ToastSettings = {
           message: 'successfully signed in',
-        	timeout: 1000
+        	timeout: 4000
         };
         toastStore.trigger(t);
-      } else{
-        const t: ToastSettings = {
-          message: 'ERROR',
-        	timeout: 1000
-        };
-        toastStore.trigger(t);
+        console.log('llol')
       }
     }
   });
