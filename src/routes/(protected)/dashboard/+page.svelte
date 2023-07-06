@@ -1,13 +1,12 @@
 <script lang="ts">
-  import type { PageData } from './$types';
   
 
 	import { Toast, toastStore } from '@skeletonlabs/skeleton';
   import type { ToastSettings } from '@skeletonlabs/skeleton';
 
 	
-  export let data: PageData;
 </script>
+
 
 
 <dl class="list-dl">
@@ -22,6 +21,5 @@
 	</div>
   
 </dl>
-
 
 <Toast/>
