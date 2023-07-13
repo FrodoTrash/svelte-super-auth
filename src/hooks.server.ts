@@ -17,10 +17,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.pb = pb;
 	event.locals.user = structuredClone(pb.authStore.model);
 
-	console.log(event.route.id?.split('/')[1] === '(protected)');
+	console.log(event.route.id?.split('/'));
 
 	if (event.route.id?.split('/')[1] === '(protected)')
 		if (!event.locals.user) throw redirect(303, 'login');
+
+	if (event.route.id?.split('/')[1] === '(auth)')
+		if (event.route.id?.split('/')[2] !== 'logout')
+			if (event.locals.user) throw redirect(303, 'dashboard');
 
 	const response = await resolve(event);
 

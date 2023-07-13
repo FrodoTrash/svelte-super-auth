@@ -3,7 +3,7 @@ import type { Actions } from './$types';
 
 export const actions: Actions = {
 	default: async ({ locals }) => {
-		console.log(locals.user + ' logged out');
+		console.log(locals.user?.username + ' logged out');
 		locals.pb.authStore.clear();
 		locals.user = null;
 		throw redirect(303, '/');
