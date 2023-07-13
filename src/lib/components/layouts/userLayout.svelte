@@ -19,7 +19,33 @@
 
 	// FIXME this shouldn't be any I think
 	export let currentUser: any;
+
+	import { Modal, modalStore } from '@skeletonlabs/skeleton';
+	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
+	import ManagerModal from '../manager/managerModal.svelte';
+
+	const modalComponentRegistry: Record<string, ModalComponent> = {
+		// Custom Modal 1
+		ManagerModal: {
+			// Pass a reference to your custom component
+			ref: ManagerModal,
+			// Add the component properties as key/value pairs
+			props: { background: 'bg-red-500' },
+			// Provide a template literal for the default component slot
+			slot: '<p>Skeleton</p>'
+		}
+
+		// ...
+	};
+
+	const modal: ModalSettings = {
+		type: 'component',
+		// Pass the component registry key as a string:
+		component: 'ManagerModal'
+	};
 </script>
+
+<Modal components={modalComponentRegistry} />
 
 <AppBar>
 	<svelte:fragment slot="lead">
@@ -28,6 +54,8 @@
 
 	<!-- tail -->
 	<svelte:fragment slot="trail">
+		<button class="btn variant-form-material" on:click={modalStore.trigger(modal)}>ADD</button>
+
 		<form action="/logout" method="post" use:enhance>
 			<button class="btn variant-form-material">LOGOUT</button>
 		</form>

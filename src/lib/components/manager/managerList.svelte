@@ -1,8 +1,3 @@
-<script lang="ts">
-	import { Toast, toastStore } from '@skeletonlabs/skeleton';
-	import type { ToastSettings } from '@skeletonlabs/skeleton';
-</script>
-
 <dl class="list-dl">
 	<div>
 		<span class="badge bg-primary-500">💀</span>
@@ -14,5 +9,3 @@
 		<button class="btn variant-form-material">remove</button>
 	</div>
 </dl>
-
-<Toast />
