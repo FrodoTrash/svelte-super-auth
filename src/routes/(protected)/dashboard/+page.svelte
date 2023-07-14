@@ -1,18 +1,24 @@
 <script lang="ts">
-	import { Toast, toastStore } from '@skeletonlabs/skeleton';
-	import type { ToastSettings } from '@skeletonlabs/skeleton';
+	import { Toast } from '@skeletonlabs/skeleton';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 </script>
 
-<dl class="list-dl">
-	<div>
-		<span class="badge bg-primary-500">💀</span>
-		<span class="flex-auto">
-			<dt>Title</dt>
-			<dd>Description</dd>
-		</span>
-		<button class="btn variant-form-material">options</button>
-		<button class="btn variant-form-material">remove</button>
+<div class="container h-full mx-auto flex justify-center items-center">
+	<div class="space-y-5">
+		<h1 class="h1">You're authorized</h1>
+		<p>Start by exploring:</p>
+		<ul>
+			<li>
+				<code class="code">username</code> - {data.user?.username}
+			</li>
+			<li>
+				<code class="code">email</code> -{data.user?.email}
+			</li>
+			<li><code class="code">registered</code> - {data.user?.created}</li>
+		</ul>
 	</div>
-</dl>
+</div>
 
 <Toast />

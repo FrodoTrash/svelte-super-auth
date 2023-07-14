@@ -1,23 +1,22 @@
-import { pb } from '$lib/utils/pocketbase';
+import PocketBase from 'pocketbase';
+import { PUBLIC_POCKETBASE_URL } from '$env/static/public';
 import { type Handle, redirect } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	// before
+	event.locals.pb = new PocketBase(PUBLIC_POCKETBASE_URL);
 
-	//@ts-expect-error type string || null not assignable
-	pb.authStore.loadFromCookie(event.request.headers.get('cookie'));
+	// load the store data from the request cookie string
+	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
 
-	if (pb.authStore.isValid) {
-		try {
-			await pb.collection('users').authRefresh();
-		} catch (_) {
-			pb.authStore.clear();
-		}
+	try {
+		// get an up-to-date auth store state by verifying and refreshing the loaded auth model (if any)
+		event.locals.pb.authStore.isValid && (await event.locals.pb.collection('users').authRefresh());
+		event.locals.user = structuredClone(event.locals.pb.authStore.model);
+	} catch (_) {
+		// clear the auth store on failed refresh
+		event.locals.pb.authStore.clear();
+		event.locals.user = null;
 	}
-	event.locals.pb = pb;
-	event.locals.user = structuredClone(pb.authStore.model);
-
-	console.log(event.route.id?.split('/'));
 
 	if (event.route.id?.split('/')[1] === '(protected)')
 		if (!event.locals.user) throw redirect(303, 'login');
@@ -28,8 +27,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const response = await resolve(event);
 
-	// after
-	response.headers.set('set-cookie', pb.authStore.exportToCookie({ httpOnly: false }));
+	// send back the default 'pb_auth' cookie to the client with the latest store state
+	response.headers.append(
+		'set-cookie',
+		event.locals.pb.authStore.exportToCookie({ httpOnly: false })
+	);
 
 	return response;
 };

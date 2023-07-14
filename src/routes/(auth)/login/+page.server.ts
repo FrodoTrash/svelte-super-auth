@@ -13,6 +13,9 @@ export const load = async (event) => {
 
 export const actions: Actions = {
 	login: async (event) => {
+		// test delay
+		// await new Promise((r) => setTimeout(r, 1000));
+
 		const form = await superValidate(event, loginSchema);
 
 		if (!form.valid) {

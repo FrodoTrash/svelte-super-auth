@@ -6,15 +6,13 @@
 
 	import { Toast, toastStore } from '@skeletonlabs/skeleton';
 	import type { ToastSettings } from '@skeletonlabs/skeleton';
-	import { pb } from '$lib/utils/pocketbase';
 
 	export let data: PageData;
 
-	const { form, errors, enhance, message } = superForm(data.form, {
+	const { form, errors, enhance, message, delayed } = superForm(data.form, {
 		validators: loginSchema,
 		onResult({ result }) {
 			if (result.type == 'redirect') {
-				pb.authStore.loadFromCookie(document.cookie);
 				const t: ToastSettings = {
 					message: 'successfully signed in',
 					timeout: 5000
@@ -24,6 +22,8 @@
 		}
 	});
 </script>
+
+<Toast />
 
 <div class="container h-full mx-auto flex justify-center items-center">
 	<div class="space-y-5">
@@ -66,8 +66,8 @@
 			{#if $message}
 				<div class="message">{$message}</div>
 			{/if}
+
+			{#if $delayed}Working...{/if}
 		</form>
 	</div>
 </div>
-
-<Toast />
