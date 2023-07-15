@@ -9,7 +9,6 @@
 
 	export let data: LayoutData;
 
-	// TODO add superforms to logout
 	const { form, enhance } = superForm(data.form, {
 		onError({ result }) {
 			const t: ToastSettings = {
