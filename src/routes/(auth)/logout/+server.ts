@@ -1,12 +1,12 @@
-import { redirect } from '@sveltejs/kit';
-// import type { Actions } from './$types';
+// import { redirect } from '@sveltejs/kit';
+import { actionResult } from 'sveltekit-superforms/server';
 
-// ssr
+// endpoint
 export const POST = ({ locals }) => {
 	console.log(locals.user?.username + ' logged out');
 	locals.pb.authStore.clear();
 	locals.user = null;
-	throw redirect(303, '/');
+	return actionResult('redirect', '/', { status: 303 });
 };
 
 // export const actions: Actions = {
