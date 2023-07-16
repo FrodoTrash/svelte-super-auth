@@ -7,6 +7,7 @@ Just trying to do a good, secure and easy auth as a template for my future proje
 - superforms
 - zod
 - pocketbase
+- skeltonui
 
 ## run
 `pnpm install`
