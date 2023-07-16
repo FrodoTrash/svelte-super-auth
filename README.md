@@ -1,6 +1,6 @@
 # sveltekit x pocketbase auth
 
-## idea
+## why
 Just trying to do a good, secure and easy auth as a template for my future projects...
 
 ## dependencies
@@ -11,4 +11,4 @@ Just trying to do a good, secure and easy auth as a template for my future proje
 ## run
 `pnpm install`
 `pnpm dev`
-`pnpm build`
+`.\pocketbase\pocketbase.exe serve`
