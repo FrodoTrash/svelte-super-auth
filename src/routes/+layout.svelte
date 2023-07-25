@@ -6,25 +6,43 @@
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
 
-	import { Toast } from '@skeletonlabs/skeleton';
-	import { AppShell } from '@skeletonlabs/skeleton';
-
 	import type { LayoutData } from './$types';
 
-	import UserLayout from '$lib/components/layouts/userLayout.svelte';
-	import DefaultLayout from '$lib/components/layouts/DefaultLayout.svelte';
+	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
+	import { enhance } from '$app/forms';
 
 	export let data: LayoutData;
 </script>
 
-<Toast />
 <AppShell>
+	<!-- app bar start -->
 	<svelte:fragment slot="header">
 		{#if data.user}
-			<UserLayout {data} />
+			<AppBar>
+				<svelte:fragment slot="lead">
+					<a href="/dashboard">{data.user?.email}</a>
+				</svelte:fragment>
+
+				<!-- tail -->
+				<svelte:fragment slot="trail">
+					<form action="/logout" method="post" use:enhance>
+						<button class="btn variant-form-material">LOGOUT</button>
+					</form>
+				</svelte:fragment>
+			</AppBar>
 		{:else}
-			<DefaultLayout />
+			<AppBar>
+				<svelte:fragment slot="lead">
+					<a href="/">Actions Auth</a>
+				</svelte:fragment>
+
+				<!-- tail -->
+				<svelte:fragment slot="trail">
+					<a class="btn variant-form-material" href="/login">LOGIN</a>
+				</svelte:fragment>
+			</AppBar>
 		{/if}
 	</svelte:fragment>
+	<!-- app bar end -->
 	<slot />
 </AppShell>

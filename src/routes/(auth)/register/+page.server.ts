@@ -1,10 +1,12 @@
-import { fail, type Actions, redirect } from '@sveltejs/kit';
+import type { Actions } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
+
+import { fail, redirect } from '@sveltejs/kit';
 import { superValidate, message } from 'sveltekit-superforms/server';
+import { register } from '$lib/utils/schemas';
 
-import { registerSchema } from '$lib/utils/schemas';
-
-export const load = async (event) => {
-	const form = await superValidate(event, registerSchema);
+export const load: PageServerLoad = async () => {
+	const form = await superValidate(register);
 
 	return {
 		form
@@ -12,22 +14,19 @@ export const load = async (event) => {
 };
 
 export const actions: Actions = {
-	register: async (event) => {
-		const form = await superValidate(event, registerSchema);
+	default: async ({ locals, request }) => {
+		const form = await superValidate(request, register);
 
-		if (!form.valid) {
+		if (!form.valid)
 			return fail(400, {
 				form
 			});
-		}
 
 		try {
-			await event.locals.pb.collection('users').create(form.data);
-			await event.locals.pb
-				.collection('users')
-				.authWithPassword(form.data.username, form.data.password);
+			await locals.pb.collection('users').create(form.data);
+			await locals.pb.collection('users').authWithPassword(form.data.username, form.data.password);
 		} catch (error) {
-			return message(form, 'invalid credentials', {
+			return message(form, 'Something went wrong...', {
 				status: 400
 			});
 		}

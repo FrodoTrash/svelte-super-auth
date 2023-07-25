@@ -1,19 +1,9 @@
-// import { redirect } from '@sveltejs/kit';
 import { actionResult } from 'sveltekit-superforms/server';
+import type { RequestHandler } from './$types';
 
-// endpoint
-export const POST = ({ locals }) => {
+export const POST: RequestHandler = async ({ locals }) => {
 	console.log(locals.user?.username + ' logged out');
 	locals.pb.authStore.clear();
 	locals.user = null;
 	return actionResult('redirect', '/', { status: 303 });
 };
-
-// export const actions: Actions = {
-// 	default: async ({ locals }) => {
-// 		console.log(locals.user?.username + ' logged out');
-// 		locals.pb.authStore.clear();
-// 		locals.user = null;
-// 		throw redirect(303, '/');
-// 	}
-// };

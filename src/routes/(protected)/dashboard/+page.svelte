@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Toast } from '@skeletonlabs/skeleton';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -20,5 +19,3 @@
 		</ul>
 	</div>
 </div>
-
-<Toast />

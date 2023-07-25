@@ -1,10 +1,12 @@
-import { fail, type Actions, redirect } from '@sveltejs/kit';
-import { message, superValidate } from 'sveltekit-superforms/server';
+import type { Actions } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
-import { loginSchema } from '$lib/utils/schemas';
+import { fail, redirect } from '@sveltejs/kit';
+import { superValidate, message } from 'sveltekit-superforms/server';
+import { login } from '$lib/utils/schemas';
 
-export const load = async (event) => {
-	const form = await superValidate(event, loginSchema);
+export const load: PageServerLoad = async () => {
+	const form = await superValidate(login);
 
 	return {
 		form
@@ -12,24 +14,18 @@ export const load = async (event) => {
 };
 
 export const actions: Actions = {
-	login: async (event) => {
-		// test delay
-		// await new Promise((r) => setTimeout(r, 1000));
+	default: async ({ locals, request }) => {
+		const form = await superValidate(request, login);
 
-		const form = await superValidate(event, loginSchema);
-
-		if (!form.valid) {
+		if (!form.valid)
 			return fail(400, {
 				form
 			});
-		}
 
 		try {
-			await event.locals.pb
-				.collection('users')
-				.authWithPassword(form.data.username, form.data.password);
+			await locals.pb.collection('users').authWithPassword(form.data.username, form.data.password);
 		} catch (error) {
-			return message(form, 'something went wrong', {
+			return message(form, 'Wrong credentials...', {
 				status: 400
 			});
 		}
