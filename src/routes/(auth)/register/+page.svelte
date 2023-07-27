@@ -7,7 +7,10 @@
 	export let data: PageData;
 
 	const { form, errors, enhance, message, delayed } = superForm(data.form, {
-		validators: register
+		validators: register,
+		onError({ result }) {
+			$message = result.error.message;
+		}
 	});
 </script>
 
@@ -15,7 +18,7 @@
 	<div class="space-y-4">
 		<h1 class="h1">login</h1>
 
-		<form action="/register" method="post" use:enhance>
+		<form action="/api/register" method="post" use:enhance>
 			<!-- username -->
 			<label class="label">
 				<span>username</span>
