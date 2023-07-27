@@ -3,6 +3,9 @@
 ## why
 Just trying to do a good, secure and easy auth as a template for my future projects...
 
+## Actions
+Main branch has Actions and Endpoint brach uses endpoint api 
+
 ## dependencies
 - superforms
 - zod
