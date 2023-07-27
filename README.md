@@ -10,7 +10,7 @@ Main branch has Actions and Endpoint brach uses endpoint api
 - superforms
 - zod
 - pocketbase
-- skeltonui
+- skeletonui
 
 ## run
 `pnpm install`
